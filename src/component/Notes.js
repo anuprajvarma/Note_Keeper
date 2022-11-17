@@ -12,6 +12,7 @@ export const Notes = () => {
     const func = async () => {
       try {
         const res = await getDocs(collection(db, "users"));
+        console.log(res);
         res.forEach((doc) => {
           getPostFromfirebase.push({
             ...doc.data(),
@@ -26,6 +27,8 @@ export const Notes = () => {
     func();
   }, [notedoc]);
 
+  const deleteBtn = () => {};
+
   return (
     <div className="notes-container">
       {notedoc.map((i) => {
@@ -35,9 +38,11 @@ export const Notes = () => {
               <BsFillPencilFill />
             </div>
             <div className="title">{i.title}</div>
-            <div className="des">{i.tagline}</div>
+            <div className="tagline">{i.tagline}</div>
             <div className="des">{i.body}</div>
-            <button className="DeleteButton">delete</button>
+            <button className="DeleteButton" onClick={() => deleteBtn(i.id)}>
+              delete
+            </button>
           </div>
         );
       })}

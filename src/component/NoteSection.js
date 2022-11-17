@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import Textarea from "react-expanding-textarea";
 
-import { AddNotes } from "../firebase/funtions";
+// import { AddNotes } from "../firebase/funtions";
 
 export const NoteSection = () => {
   const [notes, SetNotes] = useState({
@@ -19,7 +20,7 @@ export const NoteSection = () => {
 
   const handle = (e) => {
     e.preventDefault();
-    AddNotes({ notes, SetNotes });
+    // AddNotes({ notes, SetNotes });
   };
 
   return (
@@ -43,7 +44,7 @@ export const NoteSection = () => {
           value={notes.tagline}
           autoComplete="off"
         ></input>
-        <input
+        <Textarea
           className="input"
           type="text"
           name="body"
@@ -51,7 +52,7 @@ export const NoteSection = () => {
           onChange={handleInput}
           value={notes.body}
           autoComplete="off"
-        ></input>
+        ></Textarea>
         <input className="submit-button" type="submit"></input>
       </form>
     </>
