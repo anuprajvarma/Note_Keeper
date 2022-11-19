@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Textarea from "react-expanding-textarea";
 
-// import { AddNotes } from "../firebase/funtions";
+import { AddNotes } from "../firebase/funtions";
 
 export const NoteSection = () => {
   const [notes, SetNotes] = useState({
@@ -20,7 +20,8 @@ export const NoteSection = () => {
 
   const handle = (e) => {
     e.preventDefault();
-    // AddNotes({ notes, SetNotes });
+    console.log(notes);
+    AddNotes({ notes, SetNotes });
   };
 
   return (

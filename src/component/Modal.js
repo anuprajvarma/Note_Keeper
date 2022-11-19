@@ -1,49 +1,64 @@
 import React from "react";
+import Textarea from "react-expanding-textarea";
 
-import { UpdateNotes } from "../firebase/functions";
+import { UpdateNotes } from "../firebase/funtions";
 
 export const Modal = ({
-  id,
-  uid,
+  notesId,
   title,
-  description,
-  setModal,
-  setDes,
+  tagline,
+  body,
+  setTaglin,
   setTitle,
+  setBody,
+  setModal,
+  setNotesid,
 }) => {
   const titleHandle = (e) => {
     setTitle(e.target.value);
   };
 
-  const desHandle = (e) => {
-    setDes(e.target.value);
+  const TaglineHadnle = (e) => {
+    setTaglin(e.target.value);
   };
 
-  const updatehandle = ({ title, tagline, body }) => {
-    UpdateNotes({ uid, id, title, body });
+  const bodyHandle = (e) => {
+    setBody(e.target.value);
+  };
+
+  const updatehandle = ({ notesId, title, tagline, body }) => {
+    UpdateNotes({ notesId, title, tagline, body });
     setModal(false);
+    setNotesid("");
   };
 
   return (
     <div className="modal">
       <div className="modalContent">
-        <input
+        <Textarea
           type="text"
           className="titleInput"
           placeholder="Title"
           value={title}
           onChange={titleHandle}
         />
-        <input
+        <Textarea
           type="text"
           className="titleInput"
-          placeholder="Describe"
-          value={description}
-          onChange={desHandle}
+          placeholder="Taglie"
+          value={tagline}
+          onChange={TaglineHadnle}
+        />
+        <Textarea
+          type="text"
+          className="titleInput"
+          placeholder="Body"
+          value={body}
+          onChange={bodyHandle}
         />
         <button
           className="updateBtn"
-          onClick={() => updatehandle({ title, description })}
+          onClick={() => updatehandle({ notesId, title, tagline, body })}
         >
           Update
         </button>
