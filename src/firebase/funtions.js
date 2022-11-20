@@ -27,6 +27,7 @@ const AddNotes = async ({ notes, SetNotes }) => {
 const DeletNote = ({ noteid }) => {
   try {
     const ref = deleteDoc(doc(db, "users", `${noteid}`));
+    const res = deleteDoc(doc(db, "pinnedNotes", `${noteid}`));
     // setNotesid("");
   } catch (errr) {
     console.log(errr);
@@ -63,6 +64,20 @@ const PinnedNote = async ({ noteid, title, tagline, body }) => {
   }
 };
 
+const UnpinnedNote = async ({ noteid, title, tagline, body }) => {
+  try {
+    const res = await addDoc(collection(db, "users"), {
+      title: title,
+      tagline: tagline,
+      body: body,
+      timestamp: serverTimestamp(),
+    });
+    const ref = deleteDoc(doc(db, "pinnedNotes", `${noteid}`));
+  } catch (errr) {
+    console.log(errr);
+  }
+};
+
 const Updatedata = async ({ setPinned }) => {
   const getpos = [];
   const ref = await getDocs(
@@ -77,4 +92,11 @@ const Updatedata = async ({ setPinned }) => {
   setPinned(getpos);
 };
 
-export { AddNotes, UpdateNotes, DeletNote, PinnedNote, Updatedata };
+export {
+  AddNotes,
+  UpdateNotes,
+  DeletNote,
+  PinnedNote,
+  Updatedata,
+  UnpinnedNote,
+};
