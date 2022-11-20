@@ -1,13 +1,14 @@
 import React from "react";
 import Textarea from "react-expanding-textarea";
 
-import { UpdateNotes } from "../firebase/funtions";
+import { UpdateNotes } from "../funtions.js/firebaseFuntions";
 
 export const Modal = ({
   notesId,
   title,
   tagline,
   body,
+  tag,
   setTaglin,
   setTitle,
   setBody,
@@ -60,7 +61,7 @@ export const Modal = ({
           className="updateBtn"
           onClick={() => updatehandle({ notesId, title, tagline, body })}
         >
-          Update
+          Close
         </button>
       </div>
     </div>

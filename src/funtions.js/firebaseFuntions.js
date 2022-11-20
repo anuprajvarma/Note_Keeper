@@ -1,4 +1,4 @@
-import { db } from "./firebase.untile";
+import { db } from "../firebase/firebase.untile";
 import {
   collection,
   addDoc,
@@ -78,25 +78,4 @@ const UnpinnedNote = async ({ noteid, title, tagline, body }) => {
   }
 };
 
-const Updatedata = async ({ setPinned }) => {
-  const getpos = [];
-  const ref = await getDocs(
-    query(collection(db, "pinnedNotes"), orderBy("timestamp"), limit(20))
-  );
-  ref.forEach((doc) => {
-    getpos.push({
-      ...doc.data(),
-      id: doc.id,
-    });
-  });
-  setPinned(getpos);
-};
-
-export {
-  AddNotes,
-  UpdateNotes,
-  DeletNote,
-  PinnedNote,
-  Updatedata,
-  UnpinnedNote,
-};
+export { AddNotes, UpdateNotes, DeletNote, PinnedNote, UnpinnedNote };

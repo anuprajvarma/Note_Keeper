@@ -1,14 +1,14 @@
-import { getDocs, collection, query, limit, orderBy } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Textarea from "react-expanding-textarea";
 import { AiOutlinePushpin, AiOutlineDelete } from "react-icons/ai";
 import { BsFillPinAngleFill } from "react-icons/bs";
 
-import { db } from "../firebase/firebase.untile";
-import { DeletNote } from "../firebase/funtions";
-import { UnpinnedNote } from "../firebase/funtions";
+import { DeletNote } from "../funtions.js/firebaseFuntions";
+import { UnpinnedNote } from "../funtions.js/firebaseFuntions";
 import { Modal } from "./Modal";
-import { PinnedNote } from "../firebase/funtions";
+import { func } from "../funtions.js/funtion";
+import { pinned } from "../funtions.js/funtion";
+import { PinnedNote } from "../funtions.js/firebaseFuntions";
 
 export const Notes = () => {
   const [notesId, setNotesid] = useState();
@@ -16,54 +16,16 @@ export const Notes = () => {
   const [pinnedDoc, setPinned] = useState([]);
   const [title, setTitle] = useState();
   const [tagline, setTaglin] = useState();
+  const [tag, setTag] = useState("pinned");
   const [body, setBody] = useState();
   const [modal, setModal] = useState(false);
-  const getdata = query(
-    collection(db, "users"),
-    orderBy("timestamp"),
-    limit(20)
-  );
-
-  const get = query(
-    collection(db, "pinnedNotes"),
-    orderBy("timestamp"),
-    limit(20)
-  );
-  const func = async () => {
-    const getPostFromfirebase = [];
-    try {
-      const res = await getDocs(getdata);
-      res.forEach((doc) => {
-        getPostFromfirebase.push({
-          ...doc.data(),
-          id: doc.id,
-        });
-      });
-      setResults(getPostFromfirebase);
-      // Updatedata({ setPinned });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const pinned = async () => {
-    const getpos = [];
-    const ref = await getDocs(get);
-    ref.forEach((doc) => {
-      getpos.push({
-        ...doc.data(),
-        id: doc.id,
-      });
-    });
-    setPinned(getpos);
-  };
 
   useEffect(() => {
-    func();
+    func({ setResults });
   }, [notedoc]);
 
   useEffect(() => {
-    pinned();
+    pinned({ setPinned });
   }, [pinnedDoc]);
 
   const deleteBtn = ({ i }) => {
@@ -87,7 +49,16 @@ export const Notes = () => {
     UnpinnedNote({ noteid, title, tagline, body });
   };
 
-  const updateHandle = (i) => {
+  const updatepinnedHandle = ({ i }) => {
+    setNotesid(i.id);
+    setTitle(i.title);
+    setTaglin(i.tagline);
+    setBody(i.body);
+    setModal(true);
+    setTag("Unpinned");
+  };
+
+  const updateUnpinnedHandle = (i) => {
     setNotesid(i.id);
     setTitle(i.title);
     setTaglin(i.tagline);
@@ -110,7 +81,7 @@ export const Notes = () => {
                     onClick={() => UnpinnedHandle({ i })}
                   />
                 </div>
-                <div onClick={() => updateHandle(i)}>
+                <div>
                   <div className="title">{i.title}</div>
                   <div className="tagline">{i.tagline}</div>
                   <Textarea className="input" value={i.body} />
@@ -132,6 +103,7 @@ export const Notes = () => {
             title={title}
             tagline={tagline}
             body={body}
+            tag={tag}
             setTitle={setTitle}
             setTaglin={setTaglin}
             setBody={setBody}
@@ -151,7 +123,7 @@ export const Notes = () => {
                       onClick={() => pinnedHandle({ i })}
                     />
                   </div>
-                  <div onClick={() => updateHandle(i)}>
+                  <div onClick={() => updateUnpinnedHandle(i)}>
                     <div className="title">{i.title}</div>
                     <div className="tagline">{i.tagline}</div>
                     <Textarea className="input" value={i.body} />
