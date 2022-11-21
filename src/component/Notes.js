@@ -16,9 +16,10 @@ export const Notes = () => {
   const [pinnedDoc, setPinned] = useState([]);
   const [title, setTitle] = useState();
   const [tagline, setTaglin] = useState();
-  const [tag, setTag] = useState("pinned");
   const [body, setBody] = useState();
   const [modal, setModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postperPage, setPostperPage] = useState(6);
 
   useEffect(() => {
     func({ setResults });
@@ -49,15 +50,6 @@ export const Notes = () => {
     UnpinnedNote({ noteid, title, tagline, body });
   };
 
-  const updatepinnedHandle = ({ i }) => {
-    setNotesid(i.id);
-    setTitle(i.title);
-    setTaglin(i.tagline);
-    setBody(i.body);
-    setModal(true);
-    setTag("Unpinned");
-  };
-
   const updateUnpinnedHandle = (i) => {
     setNotesid(i.id);
     setTitle(i.title);
@@ -65,6 +57,20 @@ export const Notes = () => {
     setBody(i.body);
     setModal(true);
   };
+
+  const PrePage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const NextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const lastPostIndex = currentPage * postperPage;
+  const firstPostIndex = lastPostIndex - postperPage;
+  const currentPost = notedoc.slice(firstPostIndex, lastPostIndex);
 
   return (
     <>
@@ -103,7 +109,6 @@ export const Notes = () => {
             title={title}
             tagline={tagline}
             body={body}
-            tag={tag}
             setTitle={setTitle}
             setTaglin={setTaglin}
             setBody={setBody}
@@ -111,7 +116,7 @@ export const Notes = () => {
             setNotesid={setNotesid}
           />
         ) : (
-          notedoc
+          currentPost
             .slice(0)
             .reverse()
             .map((i) => {
@@ -138,6 +143,15 @@ export const Notes = () => {
               );
             })
         )}
+      </div>
+      <div className="PgnDiv">
+        <button className="PgnBtn" onClick={PrePage}>
+          Pre Page
+        </button>
+        <p>{currentPage}</p>
+        <button className="PgnBtn" onClick={NextPage}>
+          Next Page
+        </button>
       </div>
     </>
   );

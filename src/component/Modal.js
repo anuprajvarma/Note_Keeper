@@ -8,7 +8,6 @@ export const Modal = ({
   title,
   tagline,
   body,
-  tag,
   setTaglin,
   setTitle,
   setBody,
