@@ -65,7 +65,9 @@ export const Notes = () => {
   };
 
   const NextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPost.length === 6) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const lastPostIndex = currentPage * postperPage;
